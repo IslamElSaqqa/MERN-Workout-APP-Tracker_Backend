@@ -1,7 +1,7 @@
-
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const validator = require('validator')
+
 const Schema = mongoose.Schema
 const userSchema = new Schema({
     email: { type: String, required: true, unique: true },
@@ -29,5 +29,23 @@ userSchema.statics.signUp = async function (email, password){
     const user = await this.create({email, password: password_hash})
     return user
 }
+
+// user login
+userSchema.statics.login = async function (email, password) { 
+    if (!email || !password)
+        throw Error('All fields must be filled')
+    // Find the email
+    const user = await this.findOne({ email })
+    if (!user) throw Error('Incorrect email')
+    
+    // Check password from database
+    const passwordMatch = await bcrypt.compare(password, user.password) 
+    
+    // Check if not match
+    if (!passwordMatch) throw Error('Incorrect Password')
+    
+    return user
+}
+
 // Export the model
 module.exports = mongoose.model('User', userSchema)

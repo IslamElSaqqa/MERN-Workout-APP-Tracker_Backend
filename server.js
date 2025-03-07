@@ -1,4 +1,3 @@
-
 require('dotenv').config()
 const express = require('express')
 const workoutRoutes = require('./routes/workouts');
@@ -7,7 +6,7 @@ const mongoose = require("mongoose");
 // initate express app
 const app = express();
 
-// adding the middleware
+// Adding the middleware
 app.use(express.json()) // Parsing the express incomings in json format
 app.use((req, res, next) => { 
     console.log(req.path, req.method)
