@@ -2,6 +2,7 @@
     2. Define the Model created 
     3. Define APIs
     4. Any api request is itself synchrounous.
+    5. protecting API routes using jwt authorization 
 */
 const express = require('express');
 const router = express.Router()
@@ -12,6 +13,12 @@ const {
     deleteWorkout,
     updateWorkout
 } = require('../controllers/workoutController');
+
+// Protecting workout routes
+const requireAuth = require('../middleware/requireAuth')
+router.use(requireAuth)
+
+
 // GET All Workouts
 router.get('/', getWorkouts);
 
